@@ -38,7 +38,7 @@ export default {
     axios
       .get(apiUrl)
       .then((response) => {
-        this.character = response.data.data.results[0];
+        this.character = response?.data?.data?.results[0];
       })
       .catch((error) => {
         console.error(error);

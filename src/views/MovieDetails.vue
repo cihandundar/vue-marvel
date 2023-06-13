@@ -35,10 +35,11 @@ export default {
   },
   created() {
     const characterId = this?.$route?.params?.id;
-    const apiUrl = `https://gateway.marvel.com/v1/public/characters/${characterId}?apikey=60645b73c441bf294a3a3a07b50bfafe&hash=3eec11f4ea14251a0a755a2ff02104b8`;
 
     axios
-      .get(apiUrl)
+      .get(
+        `https://gateway.marvel.com/v1/public/characters/${characterId}?apikey=60645b73c441bf294a3a3a07b50bfafe&hash=3eec11f4ea14251a0a755a2ff02104b8`
+      )
       .then((response) => {
         this.character = response?.data?.data?.results[0];
       })

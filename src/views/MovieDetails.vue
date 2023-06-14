@@ -16,15 +16,40 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  computed: {
-    character() {
-      return this.$store.state.character;
-    },
+  data() {
+    return {
+      character: {
+        name: "",
+        thumbnail: {
+          path: "",
+          extension: "",
+        },
+        description: "",
+      },
+    };
   },
   created() {
     const characterId = this.$route.params.id;
-    this.$store.dispatch("fetchCharacter", characterId);
+    const apiUrl = `https://gateway.marvel.com:443/v1/public/characters/${characterId}`;
+    const apiKey = "60645b73c441bf294a3a3a07b50bfafe";
+    const hash = "2bd018a8f222867e396d936c173bb3d8";
+
+    axios
+      .get(apiUrl, {
+        params: {
+          apikey: apiKey,
+          hash: hash,
+        },
+      })
+      .then((response) => {
+        this.character = response.data.data.results[0];
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   },
 };
 </script>

@@ -1,11 +1,12 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import store from "./store"; // Vuex Store'u içeri aktarın
 import "./styles/main.scss";
-import store from "./store";
-createApp(App).use(router).mount("#app");
 
-new Vue({
-  // ...
-  store, // Vuex Store'ı ana Vue instance'ına ekliyoruz
-});
+const app = createApp(App);
+
+app.use(router);
+app.use(store); // Vuex Store'u kullan
+
+app.mount("#app");

@@ -3,15 +3,13 @@
     <div class="details">
       <div class="details__left">
         <img
-          :src="
-            character?.thumbnail.path + '.' + character?.thumbnail?.extension
-          "
-          :alt="character?.name"
+          :src="character.thumbnail.path + '.' + character.thumbnail.extension"
+          :alt="character.name"
         />
       </div>
       <div class="details__right">
-        <h2>{{ character?.name }}</h2>
-        <p>{{ character?.description }}</p>
+        <h2>{{ character.name }}</h2>
+        <p>{{ character.description }}</p>
       </div>
     </div>
   </section>
@@ -35,17 +33,17 @@ export default {
   },
   created() {
     const characterId = this.$route.params.id;
-
-    const apiUrl = `https://gateway.marvel.com/v1/public/characters/${characterId}`;
+    const apiUrl = `https://gateway.marvel.com:443/v1/public/characters/${characterId}`;
     const apiKey = "60645b73c441bf294a3a3a07b50bfafe";
-    const hash = "3eec11f4ea14251a0a755a2ff02104b8";
-    const params = {
-      apikey: apiKey,
-      hash: hash,
-    };
+    const hash = "2bd018a8f222867e396d936c173bb3d8";
 
     axios
-      .get(apiUrl, { params })
+      .get(apiUrl, {
+        params: {
+          apikey: apiKey,
+          hash: hash,
+        },
+      })
       .then((response) => {
         this.character = response.data.data.results[0];
       })

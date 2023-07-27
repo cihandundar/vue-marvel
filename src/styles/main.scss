@@ -101,3 +101,19 @@ section {
     }
   }
 }
+
+// SEARCH
+
+.search-box {
+  display: flex;
+  justify-content: center;
+}
+button {
+  width: 100px;
+  height: 35px;
+  cursor: pointer;
+}
+
+input {
+  padding-left: 10px;
+}

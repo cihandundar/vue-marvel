@@ -2,6 +2,7 @@ import axios from "axios";
 
 export default {
   state: {
+    cartItems: [],
     character: {
       name: "",
       thumbnail: {

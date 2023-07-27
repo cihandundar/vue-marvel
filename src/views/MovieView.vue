@@ -5,9 +5,9 @@
         <input
           v-model="searchTerm"
           @keyup.enter="searchCharacter"
-          placeholder="Karakter adıyla arayın"
+          placeholder="Enter name"
         />
-        <button @click="searchCharacter">Ara</button>
+        <button @click="searchCharacter">Search</button>
       </div>
       <ul class="card">
         <li class="card__wrapper" v-for="item in items" :key="item.id">

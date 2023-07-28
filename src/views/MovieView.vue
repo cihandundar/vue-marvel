@@ -36,13 +36,30 @@ export default {
   data() {
     return {
       items: [],
-      searchTerm: "", // Kullanıcının girdiği arama terimi için veri alanı eklendi
+      searchTerm: this.$route.query.searchTerm || "", // Sayfa yüklendiğinde URL parametresinden arama terimini al
     };
   },
 
+  watch: {
+    $route(to, from) {
+      // Route değiştiğinde URL parametrelerini kontrol et
+      this.searchTerm = to.query.searchTerm || "";
+      if (to.query.searchTerm) {
+        this.fetchSearchResults();
+      } else {
+        this.fetchAllCharacters();
+      }
+    },
+  },
+
   created: function () {
-    // Sayfa yüklendiğinde tüm karakterleri getiren işlem aynen kalır
-    this.fetchAllCharacters();
+    if (this.searchTerm) {
+      // Eğer URL parametresi varsa arama sonuçlarını al
+      this.fetchSearchResults();
+    } else {
+      // Eğer URL parametresi yoksa tüm karakterleri al
+      this.fetchAllCharacters();
+    }
   },
 
   methods: {
@@ -59,20 +76,14 @@ export default {
         });
     },
 
-    searchCharacter() {
-      if (this.searchTerm.trim() === "") {
-        // Boş arama yapılamaz, tüm karakterleri göstermek için yeniden istem yapılır
-        this.fetchAllCharacters();
-        return;
-      }
-
+    fetchSearchResults() {
       axios
         .get(`https://gateway.marvel.com/v1/public/characters`, {
           params: {
             ts: 1,
             apikey: "60645b73c441bf294a3a3a07b50bfafe",
             hash: "3eec11f4ea14251a0a755a2ff02104b8",
-            nameStartsWith: this.searchTerm, // Kullanıcının girdiği terimle başlayan karakterleri getir
+            nameStartsWith: this.searchTerm,
           },
         })
         .then((response) => {
@@ -84,6 +95,17 @@ export default {
         .catch((error) => {
           console.error("Arama sırasında bir hata oluştu:", error);
         });
+    },
+
+    searchCharacter() {
+      if (this.searchTerm.trim() === "") {
+        this.$router.push({ path: this.$route.path }); // Boş arama yapılamaz, tüm karakterleri göstermek için sayfa URL'sini güncelle
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: { searchTerm: this.searchTerm },
+        }); // Arama yapıldığında sayfa URL'sini güncelle
+      }
     },
   },
 };

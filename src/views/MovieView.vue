@@ -36,13 +36,12 @@ export default {
   data() {
     return {
       items: [],
-      searchTerm: this.$route.query.searchTerm || "", // Sayfa yüklendiğinde URL parametresinden arama terimini al
+      searchTerm: this.$route.query.searchTerm || "",
     };
   },
 
   watch: {
     $route(to, from) {
-      // Route değiştiğinde URL parametrelerini kontrol et
       this.searchTerm = to.query.searchTerm || "";
       if (to.query.searchTerm) {
         this.fetchSearchResults();
@@ -54,10 +53,8 @@ export default {
 
   created: function () {
     if (this.searchTerm) {
-      // Eğer URL parametresi varsa arama sonuçlarını al
       this.fetchSearchResults();
     } else {
-      // Eğer URL parametresi yoksa tüm karakterleri al
       this.fetchAllCharacters();
     }
   },
@@ -99,12 +96,12 @@ export default {
 
     searchCharacter() {
       if (this.searchTerm.trim() === "") {
-        this.$router.push({ path: this.$route.path }); // Boş arama yapılamaz, tüm karakterleri göstermek için sayfa URL'sini güncelle
+        this.$router.push({ path: this.$route.path });
       } else {
         this.$router.push({
           path: this.$route.path,
           query: { searchTerm: this.searchTerm },
-        }); // Arama yapıldığında sayfa URL'sini güncelle
+        });
       }
     },
   },

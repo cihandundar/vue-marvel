@@ -10,7 +10,8 @@
         <button @click="searchCharacter">Search</button>
       </div>
       <ul class="card">
-        <li class="card__wrapper" v-for="item in items" :key="item.id">
+        <li v-if="isLoading" class="loading-message">Loading...</li>
+        <li class="card__wrapper" v-else v-for="item in items" :key="item.id">
           <router-link :to="{ name: `moviedetails`, params: { id: item.id } }">
             <div class="card__img">
               <img
@@ -37,6 +38,7 @@ export default {
     return {
       items: [],
       searchTerm: this.$route.query.searchTerm || "",
+      isLoading: false,
     };
   },
 
@@ -61,6 +63,7 @@ export default {
 
   methods: {
     fetchAllCharacters() {
+      this.isLoading = true;
       axios
         .get(
           `https://gateway.marvel.com/v1/public/characters?ts=1&apikey=60645b73c441bf294a3a3a07b50bfafe&hash=3eec11f4ea14251a0a755a2ff02104b8`
@@ -69,11 +72,15 @@ export default {
           this.items = response.data.data.results;
         })
         .catch((error) => {
-          console.error("Karakterler alınırken bir hata oluştu:", error);
+          console.error("An error occurred while fetching characters:", error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
 
     fetchSearchResults() {
+      this.isLoading = true;
       axios
         .get(`https://gateway.marvel.com/v1/public/characters`, {
           params: {
@@ -86,11 +93,14 @@ export default {
         .then((response) => {
           this.items = response.data.data.results;
           if (this.items.length === 0) {
-            alert("Aradığınız karakter bulunamadı.");
+            alert("The character you're looking for couldn't be found.");
           }
         })
         .catch((error) => {
-          console.error("Arama sırasında bir hata oluştu:", error);
+          console.error("An error occurred while searching:", error);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
 

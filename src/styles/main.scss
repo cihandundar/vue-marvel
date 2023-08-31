@@ -117,3 +117,10 @@ button {
 input {
   padding-left: 10px;
 }
+
+.loading-message {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
